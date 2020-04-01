@@ -1,0 +1,45 @@
+{% set name = "pymt_prms_soil" %}
+{% set version = "0.1" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/pymt-lab/{{ name }}
+  git_rev: v{{ version }}
+
+build:
+  number: 1
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('fortran') }}
+  host:
+    - python
+    - pip
+    - cython
+    - numpy 1.11.*
+    - model_metadata
+    - bmi-fortran=2.0 
+    - prms
+    - prms_soil
+  run:
+    - python
+    - {{ pin_compatible('numpy') }}
+    - bmi-fortran=2.0 
+    - prms
+    - prms_soil
+
+test:
+  imports:
+    - pymt_prms_soil
+
+about:
+  summary: Python package that wraps the PRMS Soil BMI.
+  home: https://github.com/pymt-lab/pymt_prms_soil
+  license: MIT license
+  license_file: LICENSE
+  dev_url: https://github.com/pymt-lab/pymt_prms_soil
